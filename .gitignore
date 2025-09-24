@@ -1,0 +1,9 @@
+# Ignore all... {{{
+*
+# }}}
+# Excluding .gitignore, .vimrc and .vim/ {{{
+!.gitignore
+!.vimrc
+!.vim/
+!.vim/**
+# }}}
