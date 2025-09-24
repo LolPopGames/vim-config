@@ -37,7 +37,7 @@ set clipboard=unnamedplus
 set ttyfast
 
 " Scroll
-set so=30
+set scrolloff=30
 
 " No swap
 set noswapfile
