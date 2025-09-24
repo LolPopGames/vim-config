@@ -218,16 +218,16 @@ augroup END
 " Enabling {{{
 call plug#begin()
 
-" nerdtree
+" Nerdtree
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 
-" theme
+" Theme
 Plug 'ghifarit53/tokyonight-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-" brainfuck
+" Brainfuck
 Plug 'fruit-in/brainfuck-vim'
 
 call plug#end()
