@@ -33,7 +33,7 @@ set wildmode=longest,list
 set mouse=a
 
 " Clipboard
-set clipboard=unnamedplus
+set clipboard=unnamed
 set ttyfast
 
 " Scroll
@@ -41,6 +41,12 @@ set scrolloff=30
 
 " No swap
 set noswapfile
+
+" Fold method
+set foldmethod=marker
+
+" Split to right side
+set splitright
 " }}}
 " }}}
 " Key mappings {{{
@@ -53,7 +59,7 @@ let g:maplocalleader = ","
 noremap <silent> <c-f> :nohlsearch<cr>
 
 " Open config (".vimrc" file)
-nnoremap <silent> <leader>c :vsplit $MYVIMRC<cr>
+nnoremap <silent> <leader>c :leftabove vsplit $MYVIMRC<cr>
 " }}}
 " Move line {{{
 " Down {{{
@@ -65,6 +71,29 @@ vnoremap <silent> <c-j>      :move '>+1<CR>gv=gv
 nnoremap <silent> <c-k>      :let __col_copy = col('.')<cr>ddkP:call cursor(line('.'), __col_copy)<cr>
 vnoremap <silent> <c-k>      :move '<-2<CR>gv=gv
 inoremap <silent> <c-k> <esc>:let __col_copy = col('.')<cr>ddkP:call cursor(line('.'), __col_copy)<cr>a
+" }}}
+" }}}
+" Open Previous buffer in a split {{{
+" Horizontal split {{{
+" Above/left {{{
+nnoremap <leader>hl :execute "leftabove  split \"" . bufname("#") . '"'
+nnoremap <leader>ha :execute "leftabove  split \"" . bufname("#") . '"'
+" }}}
+" Below/right {{{
+nnoremap <leader>hr :execute "rightbelow split \"" . bufname("#") . '"'
+nnoremap <leader>hb :execute "rightbelow split \"" . bufname("#") . '"'
+" }}}
+" }}}
+" Vertical split {{{
+" Above/left {{{
+nnoremap <leader>vl :execute "leftabove  vsplit \"" . bufname("#") . '"'
+nnoremap <leader>va :execute "leftabove  vsplit \"" . bufname("#") . '"'
+" }}}
+" Below/right {{{
+nnoremap <leader>vr :execute "rightbelow vsplit \"" . bufname("#") . '"'
+nnoremap <leader>vb :execute "rightbelow vsplit \"" . bufname("#") . '"'
+" }}}
+" }}}
 " }}}
 " }}}
 " Uppercase/lowercase a word {{{
@@ -146,7 +175,6 @@ onoremap an< :<c-u>normal!  f<lva<<cr>
 onoremap al< :<c-u>normal! 2F<lva<<cr>
 " }}}
 " }}}
-" }}}
 " Cursor settings {{{
 let &t_EI = "\e[1 q" " Normal, Visual, Command-line
 let &t_SI = "\e[5 q" " Insert
@@ -154,7 +182,7 @@ let &t_SR = "\e[3 q" " Replace
 " }}}
 " Autocommands {{{
 " C/C++ {{{
-fu! s:set_c_abbreviations()
+function! s:set_c_abbreviations()
     iabbrev <buffer> included include
     iabbrev <buffer> includde include
     iabbrev <buffer> includee include
@@ -198,9 +226,6 @@ augroup END
 " Vimscript {{{
 augroup filetype_vim
     autocmd!
-    " Folding
-    autocmd FileType vim setlocal foldmethod=marker
-
     " Comment
     autocmd FileType vim nnoremap <silent> <buffer> <localleader>c :let __col_copy = col('.')<cr>^i" <esc>:call cursor(line('.'), __col_copy+2)<cr>
 augroup END
