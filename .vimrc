@@ -182,29 +182,8 @@ let &t_SR = "\e[3 q" " Replace
 " }}}
 " Autocommands {{{
 " C/C++ {{{
-function! s:set_c_abbreviations()
-    iabbrev <buffer> included include
-    iabbrev <buffer> includde include
-    iabbrev <buffer> includee include
-    iabbrev <buffer> includwe include
-    iabbrev <buffer> inlcude include
-    iabbrev <buffer> icnlude include
-    iabbrev <buffer> icnldue include
-    iabbrev <buffer> inldu include
-    iabbrev <buffer> stdboo stdbool
-    iabbrev <buffer> stdbgool stdbool
-    iabbrev <buffer> stdiobo stdbool
-    iabbrev <buffer> ring string
-    iabbrev <buffer> tim time
-    iabbrev <buffer> inc< #include <stdio.h><cr>#include <stdlib.h><cr>#include <string.h><cr>#include <stdbool.h>
-    iabbrev <buffer> fori for (size_t i=0; i<; i++)
-    iabbrev <buffer> helloworld printf("Hello, World!\n");
-endf
-
 augroup filetype_c_cpp
     autocmd!
-    " Abbreviations
-    autocmd FileType c,cpp,c++,cp,cxx,cc,h,hpp,h++,hp,hxx,hh call s:set_c_abbreviations()
 
     " Comment
     autocmd FileType c,cpp,c++,cp,cxx,cc,h,hpp,h++,hp,hxx,hh nnoremap <silent> <buffer> <localleader>c :let __vimrc_col_copy = col('.')<cr>I// <esc>:call cursor(line('.'), __vimrc_col_copy+3)<cr>
