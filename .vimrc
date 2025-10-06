@@ -95,7 +95,6 @@ nnoremap <leader>vb :execute "rightbelow vsplit \"" . bufname("#") . '"'
 " }}}
 " }}}
 " }}}
-" }}}
 " Uppercase/lowercase a word {{{
 nnoremap <silent> U :let __vimrc_col_copy = col('.')<cr>viwU:call cursor(line('.'), __vimrc_col_copy)<cr>
 nnoremap <silent> L :let __vimrc_col_copy = col('.')<cr>viwu:call cursor(line('.'), __vimrc_col_copy)<cr>
@@ -173,6 +172,7 @@ onoremap in< :<c-u>normal!  f<lvi<<cr>
 onoremap il< :<c-u>normal! 2F<lvi<<cr>
 onoremap an< :<c-u>normal!  f<lva<<cr>
 onoremap al< :<c-u>normal! 2F<lva<<cr>
+" }}}
 " }}}
 " }}}
 " Cursor settings {{{
