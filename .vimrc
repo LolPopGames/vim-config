@@ -33,7 +33,7 @@ set wildmode=longest,list
 set mouse=a
 
 " Clipboard
-set clipboard=unnamed
+set clipboard=unnamedplus
 set ttyfast
 
 " Scroll
