@@ -33,7 +33,7 @@ set wildmode=longest,list
 set mouse=a
 
 " Clipboard
-set clipboard=unnamedplus
+set clipboard=unnamed
 set ttyfast
 
 " Scroll
@@ -63,14 +63,14 @@ nnoremap <silent> <leader>c :leftabove vsplit $MYVIMRC<cr>
 " }}}
 " Move line {{{
 " Down {{{
-nnoremap <silent> <c-j>      :let __vimrc_col_copy = col('.')<cr>ddp:call cursor(line('.'), __vimrc_col_copy)<cr>
-inoremap <silent> <c-j> <esc>:let __vimrc_col_copy = col('.')<cr>ddp:call cursor(line('.'), __vimrc_col_copy)<cr>a
+nnoremap <silent> <c-j>      :let __col_copy = col('.')<cr>ddp:call cursor(line('.'), __col_copy)<cr>
+inoremap <silent> <c-j> <esc>:let __col_copy = col('.')<cr>ddp:call cursor(line('.'), __col_copy)<cr>a
 vnoremap <silent> <c-j>      :move '>+1<CR>gv=gv
 " }}}
 " Up {{{
-nnoremap <silent> <c-k>      :let __vimrc_col_copy = col('.')<cr>ddkP:call cursor(line('.'), __vimrc_col_copy)<cr>
+nnoremap <silent> <c-k>      :let __col_copy = col('.')<cr>ddkP:call cursor(line('.'), __col_copy)<cr>
 vnoremap <silent> <c-k>      :move '<-2<CR>gv=gv
-inoremap <silent> <c-k> <esc>:let __vimrc_col_copy = col('.')<cr>ddkP:call cursor(line('.'), __vimrc_col_copy)<cr>a
+inoremap <silent> <c-k> <esc>:let __col_copy = col('.')<cr>ddkP:call cursor(line('.'), __col_copy)<cr>a
 " }}}
 " }}}
 " Open Previous buffer in a split {{{
@@ -95,19 +95,20 @@ nnoremap <leader>vb :execute "rightbelow vsplit \"" . bufname("#") . '"'
 " }}}
 " }}}
 " }}}
+" }}}
 " Uppercase/lowercase a word {{{
-nnoremap <silent> U :let __vimrc_col_copy = col('.')<cr>viwU:call cursor(line('.'), __vimrc_col_copy)<cr>
-nnoremap <silent> L :let __vimrc_col_copy = col('.')<cr>viwu:call cursor(line('.'), __vimrc_col_copy)<cr>
+nnoremap <silent> U :let __col_copy = col('.')<cr>viwU:call cursor(line('.'), __col_copy)<cr>
+nnoremap <silent> L :let __col_copy = col('.')<cr>viwu:call cursor(line('.'), __col_copy)<cr>
 " }}}
 " Wrap in paired characters ", ', `, (, [, {, < {{{
 " Normal mode {{{
-nnoremap <silent> <leader>" :let __vimrc_col_copy = col('.')<cr>viw<esc>a"<esc>bi"<esc>:call cursor(line('.'), __vimrc_col_copy+1)<cr>
-nnoremap <silent> <leader>' :let __vimrc_col_copy = col('.')<cr>viw<esc>a'<esc>bi'<esc>:call cursor(line('.'), __vimrc_col_copy+1)<cr>
-nnoremap <silent> <leader>` :let __vimrc_col_copy = col('.')<cr>viw<esc>a`<esc>bi`<esc>:call cursor(line('.'), __vimrc_col_copy+1)<cr>
-nnoremap <silent> <leader>( :let __vimrc_col_copy = col('.')<cr>viw<esc>a)<esc>bi(<esc>:call cursor(line('.'), __vimrc_col_copy+1)<cr>
-nnoremap <silent> <leader>[ :let __vimrc_col_copy = col('.')<cr>viw<esc>a]<esc>bi[<esc>:call cursor(line('.'), __vimrc_col_copy+1)<cr>
-nnoremap <silent> <leader>{ :let __vimrc_col_copy = col('.')<cr>viw<esc>a}<esc>bi{<esc>:call cursor(line('.'), __vimrc_col_copy+1)<cr>
-nnoremap <silent> <leader>< :let __vimrc_col_copy = col('.')<cr>viw<esc>a><esc>bi<<esc>:call cursor(line('.'), __vimrc_col_copy+1)<cr>
+nnoremap <silent> <leader>" :let __col_copy = col('.')<cr>viw<esc>a"<esc>bi"<esc>:call cursor(line('.'), __col_copy+1)<cr>
+nnoremap <silent> <leader>' :let __col_copy = col('.')<cr>viw<esc>a'<esc>bi'<esc>:call cursor(line('.'), __col_copy+1)<cr>
+nnoremap <silent> <leader>` :let __col_copy = col('.')<cr>viw<esc>a`<esc>bi`<esc>:call cursor(line('.'), __col_copy+1)<cr>
+nnoremap <silent> <leader>( :let __col_copy = col('.')<cr>viw<esc>a)<esc>bi(<esc>:call cursor(line('.'), __col_copy+1)<cr>
+nnoremap <silent> <leader>[ :let __col_copy = col('.')<cr>viw<esc>a]<esc>bi[<esc>:call cursor(line('.'), __col_copy+1)<cr>
+nnoremap <silent> <leader>{ :let __col_copy = col('.')<cr>viw<esc>a}<esc>bi{<esc>:call cursor(line('.'), __col_copy+1)<cr>
+nnoremap <silent> <leader>< :let __col_copy = col('.')<cr>viw<esc>a><esc>bi<<esc>:call cursor(line('.'), __col_copy+1)<cr>
 " }}}
 " Visual mode {{{
 vnoremap <silent> <leader>" c""<esc>P
@@ -174,22 +175,70 @@ onoremap an< :<c-u>normal!  f<lva<<cr>
 onoremap al< :<c-u>normal! 2F<lva<<cr>
 " }}}
 " }}}
-" }}}
 " Cursor settings {{{
 let &t_EI = "\e[1 q" " Normal, Visual, Command-line
 let &t_SI = "\e[5 q" " Insert
 let &t_SR = "\e[3 q" " Replace
 " }}}
 " Autocommands {{{
+" Cursor {{{
+augroup SwitchCursor
+    autocmd!
+    " On Startup {{{
+    autocmd VimEnter * silent! !echo -e "\e[1 q"
+    autocmd VimEnter * redraw!
+    " }}}
+    " On Exit {{{
+    autocmd VimLeave * silent! !echo -e "\e[5 q"
+    " }}}
+    " On Suspend {{{
+    autocmd VimSuspend * silent! !echo -e "\e[5 q"
+    " }}}
+    " On Resume {{{
+    let CurrentMode = mode(1)[strlen(mode(1)) -1]
+
+    if     CurrentMode ==? 'i'
+        autocmd VimResume * silent! !echo -e "\e[5 q"
+
+    elseif CurrentMode ==? 'r'
+        autocmd VimResume * silent! !echo -e "\e[3 q"
+
+    else " 'ncvx' & other
+        autocmd VimResume * silent! !echo -e "\e[1 q"
+
+    endif
+
+    autocmd VimResume * redraw!
+    " }}}
+augroup END
+" }}}
 " C/C++ {{{
+function! s:set_c_abbreviations()
+    iabbrev <buffer> included include
+    iabbrev <buffer> includde include
+    iabbrev <buffer> includee include
+    iabbrev <buffer> includwe include
+    iabbrev <buffer> inlcude include
+    iabbrev <buffer> icnlude include
+    iabbrev <buffer> icnldue include
+    iabbrev <buffer> inldu include
+    iabbrev <buffer> stdboo stdbool
+    iabbrev <buffer> stdbgool stdbool
+    iabbrev <buffer> stdiobo stdbool
+    iabbrev <buffer> ring string
+    iabbrev <buffer> tim time
+    iabbrev <buffer> inc< #include <stdio.h><cr>#include <stdlib.h><cr>#include <string.h><cr>#include <stdbool.h>
+    iabbrev <buffer> fori for (size_t i=0; i<; i++)
+    iabbrev <buffer> helloworld printf("Hello, World!\n");
+endf
+
 augroup filetype_c_cpp
     autocmd!
+    " Abbreviations
+    autocmd FileType c,cpp,c++,cp,cxx,cc,h,hpp,h++,hp,hxx,hh call s:set_c_abbreviations()
 
     " Comment
-    autocmd FileType c,cpp,c++,cp,cxx,cc,h,hpp,h++,hp,hxx,hh nnoremap <silent> <buffer> <localleader>c :let __vimrc_col_copy = col('.')<cr>I// <esc>:call cursor(line('.'), __vimrc_col_copy+3)<cr>
-
-    " Set ';' at end of line
-    autocmd FileType c,cpp,c++,cp,cxx,cc,h,hpp,h++,hp,hxx,hh nnoremap <silent> <buffer> <localleader>; :let __vimrc_col_copy = col('.)<cr>A;<esc>:call cursor(line('.), __vimrc_col_copy)<cr>
+    autocmd FileType c,cpp,c++,cp,cxx,cc,h,hpp,h++,hp,hxx,hh nnoremap <silent> <buffer> <localleader>c :let __col_copy = col('.')<cr>I// <esc>:call cursor(line('.'), __col_copy+3)<cr>
 augroup END
 " }}}
 " Markdown {{{
@@ -209,7 +258,7 @@ augroup END
 augroup filetype_vim
     autocmd!
     " Comment
-    autocmd FileType vim nnoremap <silent> <buffer> <localleader>c :let __vimrc_col_copy = col('.')<cr>^i" <esc>:call cursor(line('.'), __vimrc_col_copy+2)<cr>
+    autocmd FileType vim nnoremap <silent> <buffer> <localleader>c :let __col_copy = col('.')<cr>^i" <esc>:call cursor(line('.'), __col_copy+2)<cr>
 augroup END
 " }}}
 " Git {{{
